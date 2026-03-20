@@ -2,6 +2,10 @@ generatorName: python
 inputSpec: ./openapi-30.local.json
 outputDir: ./src
 
+gitHost: github.com
+gitUserId: amgix
+gitRepoId: amgix-client-python
+
 inlineSchemaNameMappings:
   Location_inner: ValidationErrorLocItem
 
@@ -10,7 +14,7 @@ additionalProperties:
   packageName: amgix_client
   projectName: amgix-client
   packageVersion: 1.0.0-beta3.2
-  # packageUrl: https://github.com/yourusername/my-api-client
+  packageUrl: https://github.com/amgix/amgix-client-python
   basePath: "http://localhost:8234"
   host: "localhost:8234"
   

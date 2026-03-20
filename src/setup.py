@@ -35,7 +35,7 @@ setup(
     description="Amalgam Index API",
     author="OpenAPI Generator community",
     author_email="team@openapitools.org",
-    url="",
+    url="https://github.com/amgix/amgix-client-python",
     keywords=["OpenAPI", "OpenAPI-Generator", "Amalgam Index API"],
     install_requires=REQUIRES,
     packages=find_packages(exclude=["test", "tests"]),
