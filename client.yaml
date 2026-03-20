@@ -1,0 +1,53 @@
+generatorName: python
+inputSpec: ./openapi-30.local.json
+outputDir: ./src
+
+inlineSchemaNameMappings:
+  Location_inner: ValidationErrorLocItem
+
+additionalProperties:
+  # Package info
+  packageName: amgix_client
+  projectName: amgix-client
+  packageVersion: 1.0.0-beta3.2
+  # packageUrl: https://github.com/yourusername/my-api-client
+  basePath: "http://localhost:8234"
+  host: "localhost:8234"
+  
+  # Library choice (urllib3, asyncio, httpx)
+  library: asyncio
+  
+  # Python version
+  pythonVersion: "3.9"
+  
+  # Type hints
+  generateSourceCodeOnly: false
+  
+  # Skip generating tests (they're usually not great anyway)
+  # hideGenerationTimestamp: true
+
+  # useOneOfDiscriminatorLookup: true
+
+# Global properties
+globalProperties:
+  # Skip models/APIs you don't need
+  # models: ""
+  # apis: ""
+  
+  # Debugging
+  # debugModels: true
+  # debugApis: true
+  # debugOperations: true
+  # debugOpenAPI: true
+
+# Template customization (advanced)
+# templateDir: ./custom-templates
+
+# Import mappings (if you want to use your own types)
+# importMappings:
+#   Pet: com.yourcompany.models.Pet
+
+  apiTests: false
+  modelTests: false 
+  
+  # openapi-normalizer: SIMPLIFY_ONEOF_ANYOF=true
