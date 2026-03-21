@@ -57,7 +57,6 @@ docs/VectorConfig.md
 docs/VectorScore.md
 docs/VectorSearchWeight.md
 docs/VersionResponse.md
-pyproject.toml
 requirements.txt
 setup.cfg
 setup.py

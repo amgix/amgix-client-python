@@ -1,12 +1,12 @@
 [project]
 name = "amgix_client"
-version = "1.0.0-beta3.2"
-description = "Amalgam Index API"
+version = "1.0.0b3.post2"
+description = "Amalgam Index (Amgix) API"
 authors = [
-  {name = "OpenAPI Generator Community",email = "team@openapitools.org"},
+  {name = "Amgix",email = "dev@amgix.io"},
 ]
 readme = "README.md"
-keywords = ["OpenAPI", "OpenAPI-Generator", "Amalgam Index API"]
+keywords = ["amgix", "amalgam-index", "search"]
 requires-python = ">=3.9"
 
 dependencies = [

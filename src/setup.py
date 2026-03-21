@@ -19,7 +19,7 @@ from setuptools import setup, find_packages  # noqa: H301
 # prerequisite: setuptools
 # http://pypi.python.org/pypi/setuptools
 NAME = "amgix-client"
-VERSION = "1.0.0-beta3.2"
+VERSION = "1.0.0b3.post2"
 PYTHON_REQUIRES = ">= 3.9"
 REQUIRES = [
     "python-dateutil >= 2.8.2",

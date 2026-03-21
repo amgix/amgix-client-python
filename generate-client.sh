@@ -83,8 +83,7 @@ fi
 echo "Server image: amgixio/amgix-one:${VERSION}-noembed"
 echo "Package version: ${PACKAGE_VERSION}"
 echo "Setting client.yaml packageVersion to ${PACKAGE_VERSION} ..."
-sed -i.bak "s/^  packageVersion: .*/  packageVersion: ${PACKAGE_VERSION}/" client.yaml
-rm -f client.yaml.bak
+sed -i "s/^  packageVersion: .*/  packageVersion: ${PACKAGE_VERSION}/" client.yaml
 
 echo "Generating Python client ..."
 # Generator runs in a container; localhost there is not the host. host.docker.internal
@@ -95,6 +94,11 @@ docker run --rm \
   -w /local \
   openapitools/openapi-generator-cli:latest \
   generate -c client.yaml --skip-validate-spec
+
+PEP440_PACKAGE_VERSION="$(python3 "$ROOT/to_pep440.py" "$PACKAGE_VERSION")"
+echo "PEP 440 version for packaging (setuptools): ${PEP440_PACKAGE_VERSION}"
+sed -i "s|^VERSION = \".*\"|VERSION = \"${PEP440_PACKAGE_VERSION}\"|" "$ROOT/src/setup.py"
+sed -i "s|^version = \".*\"|version = \"${PEP440_PACKAGE_VERSION}\"|" "$ROOT/src/pyproject.toml"
 
 cleanup
 trap - EXIT
