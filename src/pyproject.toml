@@ -1,12 +1,12 @@
 [project]
 name = "amgix_client"
-version = "1.0.0b3.post3"
+version = "1.1.0"
 description = "Amalgam Index (Amgix) API"
 authors = [
   {name = "Amgix",email = "dev@amgix.io"},
 ]
 readme = "README.md"
-keywords = ["amgix", "amalgam-index", "search"]
+keywords = ["amgix", "amalgam-index", "search", "vector-search", "hybrid-search", "semantic-search"]
 requires-python = ">=3.9"
 
 dependencies = [

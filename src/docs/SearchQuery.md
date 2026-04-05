@@ -15,6 +15,8 @@ Name | Type | Description | Notes
 **document_tags_match_all** | **bool** | If True, documents must have ALL specified tags (AND). If False, documents must have ANY of the specified tags (OR). | [optional] [default to False]
 **metadata_filter** | [**MetadataFilter**](MetadataFilter.md) | Optional recursive metadata filter. Only fields declared in collection metadata_indexes can be filtered. | [optional] 
 **raw_scores** | **bool** | Whether to include individual vector scores in results | [optional] [default to False]
+**wmtr_trigram_weight** | **float** | WMTR trigram channel multiplier for this search query. | [optional] [default to 1.0]
+**fusion_mode** | **str** | How to combine multi-vector search results. &#39;rrf&#39; &#x3D; reciprocal rank fusion (rank-based). &#39;linear&#39; &#x3D; min-max normalize each retriever&#39;s scores on its prefetch list, then sum weight * normalized score. | [optional] [default to 'rrf']
 
 ## Example
 
