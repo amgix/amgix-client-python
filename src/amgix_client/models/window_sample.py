@@ -17,21 +17,19 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
-from typing_extensions import Annotated
-from amgix_client.models.vector import Vector
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class CustomVector(BaseModel):
+class WindowSample(BaseModel):
     """
-    Base custom vector model for search queries
+    Mergeable numerator/denominator stats for a single window.
     """ # noqa: E501
-    vector_name: Annotated[str, Field(strict=True, max_length=100)] = Field(description="Name of the vector (must match collection config)")
-    vector: Vector
-    __properties: ClassVar[List[str]] = ["vector_name", "vector"]
+    value: Union[StrictFloat, StrictInt] = Field(description="Mergeable numerator for the window")
+    n: Optional[StrictInt] = Field(default=None, description="Mergeable denominator for average-like metrics")
+    __properties: ClassVar[List[str]] = ["value", "n"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,7 +49,7 @@ class CustomVector(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of CustomVector from a JSON string"""
+        """Create an instance of WindowSample from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,14 +70,11 @@ class CustomVector(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of vector
-        if self.vector:
-            _dict['vector'] = self.vector.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of CustomVector from a dict"""
+        """Create an instance of WindowSample from a dict"""
         if obj is None:
             return None
 
@@ -87,8 +82,8 @@ class CustomVector(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "vector_name": obj.get("vector_name"),
-            "vector": Vector.from_dict(obj["vector"]) if obj.get("vector") is not None else None
+            "value": obj.get("value"),
+            "n": obj.get("n")
         })
         return _obj
 

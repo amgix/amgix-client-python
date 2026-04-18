@@ -17,21 +17,23 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
-from typing_extensions import Annotated
-from amgix_client.models.vector import Vector
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class CustomVector(BaseModel):
+class MetricsBucket(BaseModel):
     """
-    Base custom vector model for search queries
+    One mergeable aligned bucket that can be used for live and historical metrics.
     """ # noqa: E501
-    vector_name: Annotated[str, Field(strict=True, max_length=100)] = Field(description="Name of the vector (must match collection config)")
-    vector: Vector
-    __properties: ClassVar[List[str]] = ["vector_name", "vector"]
+    key: StrictStr = Field(description="Metric name for this bucket")
+    dims: Optional[List[StrictStr]] = Field(default=None, description="Optional metric dimensions for this bucket")
+    bucket_start: StrictInt = Field(description="Unix timestamp of the inclusive bucket start boundary")
+    bucket_seconds: StrictInt = Field(description="Bucket duration in seconds")
+    value: Union[StrictFloat, StrictInt] = Field(description="Mergeable numerator for the bucket")
+    n: Optional[StrictInt] = Field(default=None, description="Mergeable denominator for average-like metrics")
+    __properties: ClassVar[List[str]] = ["key", "dims", "bucket_start", "bucket_seconds", "value", "n"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,7 +53,7 @@ class CustomVector(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of CustomVector from a JSON string"""
+        """Create an instance of MetricsBucket from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,14 +74,11 @@ class CustomVector(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of vector
-        if self.vector:
-            _dict['vector'] = self.vector.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of CustomVector from a dict"""
+        """Create an instance of MetricsBucket from a dict"""
         if obj is None:
             return None
 
@@ -87,8 +86,12 @@ class CustomVector(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "vector_name": obj.get("vector_name"),
-            "vector": Vector.from_dict(obj["vector"]) if obj.get("vector") is not None else None
+            "key": obj.get("key"),
+            "dims": obj.get("dims"),
+            "bucket_start": obj.get("bucket_start"),
+            "bucket_seconds": obj.get("bucket_seconds"),
+            "value": obj.get("value"),
+            "n": obj.get("n")
         })
         return _obj
 

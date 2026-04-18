@@ -13,7 +13,7 @@ additionalProperties:
   # Package info
   packageName: amgix_client
   projectName: amgix-client
-  packageVersion: 1.1.0
+  packageVersion: 1.2.0
   packageUrl: https://github.com/amgix/amgix-client-python
   basePath: "http://localhost:8234"
   host: "localhost:8234"

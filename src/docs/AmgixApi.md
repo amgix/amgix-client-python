@@ -12,12 +12,18 @@ Method | HTTP request | Description
 [**empty_collection**](AmgixApi.md#empty_collection) | **POST** /v1/collections/{collection_name}/empty | Empty Collection
 [**get_collection_config**](AmgixApi.md#get_collection_config) | **GET** /v1/collections/{collection_name} | Get Collection Config
 [**get_collection_queue_info**](AmgixApi.md#get_collection_queue_info) | **GET** /v1/collections/{collection_name}/queue/info | Get Collection Queue Info
+[**get_collection_stats**](AmgixApi.md#get_collection_stats) | **GET** /v1/collections/{collection_name}/stats | Get Collection Stats
 [**get_document**](AmgixApi.md#get_document) | **GET** /v1/collections/{collection_name}/documents/{document_id} | Get Document
 [**get_document_status**](AmgixApi.md#get_document_status) | **GET** /v1/collections/{collection_name}/documents/{document_id}/status | Get Document Status
 [**health_check**](AmgixApi.md#health_check) | **GET** /v1/health/check | Health
 [**health_ready**](AmgixApi.md#health_ready) | **GET** /v1/health/ready | Readiness Check
 [**list_collections**](AmgixApi.md#list_collections) | **GET** /v1/collections | List Collections
+[**metrics_current**](AmgixApi.md#metrics_current) | **GET** /v1/metrics/current | Metrics Current
+[**metrics_definitions**](AmgixApi.md#metrics_definitions) | **GET** /v1/metrics/definitions | Metrics Definitions
+[**metrics_prometheus**](AmgixApi.md#metrics_prometheus) | **GET** /v1/metrics/prometheus | Metrics Prometheus
+[**metrics_trends**](AmgixApi.md#metrics_trends) | **GET** /v1/metrics/trends | Metrics Trends
 [**search**](AmgixApi.md#search) | **POST** /v1/collections/{collection_name}/search | Search
+[**system_info**](AmgixApi.md#system_info) | **GET** /v1/system/info | System Info
 [**upsert_document**](AmgixApi.md#upsert_document) | **POST** /v1/collections/{collection_name}/documents | Upsert Document
 [**upsert_document_sync**](AmgixApi.md#upsert_document_sync) | **POST** /v1/collections/{collection_name}/documents/sync | Upsert Document Sync
 [**upsert_documents_bulk**](AmgixApi.md#upsert_documents_bulk) | **POST** /v1/collections/{collection_name}/documents/bulk | Upsert Documents Bulk
@@ -648,6 +654,87 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **get_collection_stats**
+> CollectionStatsResponse get_collection_stats(collection_name)
+
+Get Collection Stats
+
+Get persisted collection statistics and queue counts.
+
+Returns document counts maintained by the indexing pipeline (not a live physical count),
+plus queue entry counts by state (same data as ``GET .../queue/info``).
+
+Args:
+    collection_name: The name of the collection.
+
+Returns:
+    A `CollectionStatsResponse` with `doc_count` and `queue`.
+
+Raises:
+    HTTPException: 404 if the collection does not exist.
+
+### Example
+
+
+```python
+import amgix_client
+from amgix_client.models.collection_stats_response import CollectionStatsResponse
+from amgix_client.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost:8234
+# See configuration.py for a list of all supported configuration parameters.
+configuration = amgix_client.Configuration(
+    host = "http://localhost:8234"
+)
+
+
+# Enter a context with an instance of the API client
+async with amgix_client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = amgix_client.AmgixApi(api_client)
+    collection_name = 'collection_name_example' # str | Collection name (alphanumeric, underscores, hyphens only)
+
+    try:
+        # Get Collection Stats
+        api_response = await api_instance.get_collection_stats(collection_name)
+        print("The response of AmgixApi->get_collection_stats:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling AmgixApi->get_collection_stats: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **collection_name** | **str**| Collection name (alphanumeric, underscores, hyphens only) | 
+
+### Return type
+
+[**CollectionStatsResponse**](CollectionStatsResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **get_document**
 > Document get_document(collection_name, document_id)
 
@@ -892,7 +979,7 @@ Readiness Check
 
 Check if service is ready to handle requests.
 
-Runs four probes: database, rabbitmq, encoder (ping-encoder), rpc (ping-rpc).
+Runs four probes: database, rabbitmq, index workers, query workers.
 Returns 200 if all pass (fully ready), 218 if some fail (partial ready).
 Response body always includes all four probe results and a ready flag.
 
@@ -1023,6 +1110,285 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **metrics_current**
+> Metrics metrics_current(window=window, keys=keys)
+
+Metrics Current
+
+Return the current metrics state for all nodes over the given window (seconds).
+
+### Example
+
+
+```python
+import amgix_client
+from amgix_client.models.metrics import Metrics
+from amgix_client.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost:8234
+# See configuration.py for a list of all supported configuration parameters.
+configuration = amgix_client.Configuration(
+    host = "http://localhost:8234"
+)
+
+
+# Enter a context with an instance of the API client
+async with amgix_client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = amgix_client.AmgixApi(api_client)
+    window = 60 # int | Aggregation window in seconds - 30 or 60. (optional) (default to 60)
+    keys = ['keys_example'] # List[str] | Restrict returned metric series to these keys. Omit for all keys. (optional)
+
+    try:
+        # Metrics Current
+        api_response = await api_instance.metrics_current(window=window, keys=keys)
+        print("The response of AmgixApi->metrics_current:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling AmgixApi->metrics_current: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **window** | **int**| Aggregation window in seconds - 30 or 60. | [optional] [default to 60]
+ **keys** | [**List[str]**](str.md)| Restrict returned metric series to these keys. Omit for all keys. | [optional] 
+
+### Return type
+
+[**Metrics**](Metrics.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **metrics_definitions**
+> List[MetricDefinitionItem] metrics_definitions()
+
+Metrics Definitions
+
+Return catalog entries for all known metric keys, their units, and descriptions.
+
+### Example
+
+
+```python
+import amgix_client
+from amgix_client.models.metric_definition_item import MetricDefinitionItem
+from amgix_client.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost:8234
+# See configuration.py for a list of all supported configuration parameters.
+configuration = amgix_client.Configuration(
+    host = "http://localhost:8234"
+)
+
+
+# Enter a context with an instance of the API client
+async with amgix_client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = amgix_client.AmgixApi(api_client)
+
+    try:
+        # Metrics Definitions
+        api_response = await api_instance.metrics_definitions()
+        print("The response of AmgixApi->metrics_definitions:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling AmgixApi->metrics_definitions: %s\n" % e)
+```
+
+
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**List[MetricDefinitionItem]**](MetricDefinitionItem.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **metrics_prometheus**
+> str metrics_prometheus()
+
+Metrics Prometheus
+
+Expose current cluster metrics in Prometheus text exposition (60s rolling window).
+
+### Example
+
+
+```python
+import amgix_client
+from amgix_client.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost:8234
+# See configuration.py for a list of all supported configuration parameters.
+configuration = amgix_client.Configuration(
+    host = "http://localhost:8234"
+)
+
+
+# Enter a context with an instance of the API client
+async with amgix_client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = amgix_client.AmgixApi(api_client)
+
+    try:
+        # Metrics Prometheus
+        api_response = await api_instance.metrics_prometheus()
+        print("The response of AmgixApi->metrics_prometheus:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling AmgixApi->metrics_prometheus: %s\n" % e)
+```
+
+
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+**str**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: text/plain
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **metrics_trends**
+> List[MetricTrend] metrics_trends(since, until, resolution=resolution, keys=keys)
+
+Metrics Trends
+
+Return historical metric buckets for the given time range and resolution.
+
+Args:
+    since: Inclusive start of the time range (ISO 8601, UTC assumed if no timezone given).
+    until: Exclusive end of the time range (ISO 8601, UTC assumed if no timezone given).
+    resolution: Bucket size in seconds - 60 for 1-minute, 300 for 5-minute.
+    keys: One or more metric keys to return. Omit to return all keys.
+
+### Example
+
+
+```python
+import amgix_client
+from amgix_client.models.metric_trend import MetricTrend
+from amgix_client.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost:8234
+# See configuration.py for a list of all supported configuration parameters.
+configuration = amgix_client.Configuration(
+    host = "http://localhost:8234"
+)
+
+
+# Enter a context with an instance of the API client
+async with amgix_client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = amgix_client.AmgixApi(api_client)
+    since = '2013-10-20T19:20:30+01:00' # datetime | 
+    until = '2013-10-20T19:20:30+01:00' # datetime | 
+    resolution = 60 # int | Bucket size in seconds - 60 for 1-minute, 300 for 5-minute. (optional) (default to 60)
+    keys = ['keys_example'] # List[str] |  (optional)
+
+    try:
+        # Metrics Trends
+        api_response = await api_instance.metrics_trends(since, until, resolution=resolution, keys=keys)
+        print("The response of AmgixApi->metrics_trends:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling AmgixApi->metrics_trends: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **since** | **datetime**|  | 
+ **until** | **datetime**|  | 
+ **resolution** | **int**| Bucket size in seconds - 60 for 1-minute, 300 for 5-minute. | [optional] [default to 60]
+ **keys** | [**List[str]**](str.md)|  | [optional] 
+
+### Return type
+
+[**List[MetricTrend]**](MetricTrend.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **search**
 > List[SearchResult] search(collection_name, search_query)
 
@@ -1101,6 +1467,70 @@ No authorization required
 |-------------|-------------|------------------|
 **200** | Successful Response |  -  |
 **422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **system_info**
+> SystemInfoResponse system_info()
+
+System Info
+
+Summarize deployment and infrastructure (no connection URLs).
+
+### Example
+
+
+```python
+import amgix_client
+from amgix_client.models.system_info_response import SystemInfoResponse
+from amgix_client.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost:8234
+# See configuration.py for a list of all supported configuration parameters.
+configuration = amgix_client.Configuration(
+    host = "http://localhost:8234"
+)
+
+
+# Enter a context with an instance of the API client
+async with amgix_client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = amgix_client.AmgixApi(api_client)
+
+    try:
+        # System Info
+        api_response = await api_instance.system_info()
+        print("The response of AmgixApi->system_info:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling AmgixApi->system_info: %s\n" % e)
+```
+
+
+
+### Parameters
+
+This endpoint does not need any parameter.
+
+### Return type
+
+[**SystemInfoResponse**](SystemInfoResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 

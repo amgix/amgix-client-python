@@ -17,21 +17,23 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
-from typing_extensions import Annotated
-from amgix_client.models.vector import Vector
+from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictFloat, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional, Union
+from amgix_client.models.node_metric_series import NodeMetricSeries
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class CustomVector(BaseModel):
+class NodeView(BaseModel):
     """
-    Base custom vector model for search queries
+    Snapshot of a single cluster node as last reported to the leader.
     """ # noqa: E501
-    vector_name: Annotated[str, Field(strict=True, max_length=100)] = Field(description="Name of the vector (must match collection config)")
-    vector: Vector
-    __properties: ClassVar[List[str]] = ["vector_name", "vector"]
+    role: StrictStr = Field(description="Node role: 'index', 'query', 'all' for encoder nodes; 'api' for API nodes")
+    is_leader: Optional[StrictBool] = Field(default=False, description="Whether this node is the current encoder leader")
+    last_seen: Union[StrictFloat, StrictInt] = Field(description="Unix timestamp of the last heartbeat received from this node")
+    meta: Optional[Dict[str, Any]] = Field(default=None, description="Forward-compatible node metadata bag (for load/capacity/gpu/memory/model details and future node status values)")
+    metrics: Optional[List[NodeMetricSeries]] = Field(default=None, description="Metric series for this node; empty for API nodes")
+    __properties: ClassVar[List[str]] = ["role", "is_leader", "last_seen", "meta", "metrics"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,7 +53,7 @@ class CustomVector(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of CustomVector from a JSON string"""
+        """Create an instance of NodeView from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,14 +74,18 @@ class CustomVector(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of vector
-        if self.vector:
-            _dict['vector'] = self.vector.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in metrics (list)
+        _items = []
+        if self.metrics:
+            for _item_metrics in self.metrics:
+                if _item_metrics:
+                    _items.append(_item_metrics.to_dict())
+            _dict['metrics'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of CustomVector from a dict"""
+        """Create an instance of NodeView from a dict"""
         if obj is None:
             return None
 
@@ -87,8 +93,11 @@ class CustomVector(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "vector_name": obj.get("vector_name"),
-            "vector": Vector.from_dict(obj["vector"]) if obj.get("vector") is not None else None
+            "role": obj.get("role"),
+            "is_leader": obj.get("is_leader") if obj.get("is_leader") is not None else False,
+            "last_seen": obj.get("last_seen"),
+            "meta": obj.get("meta"),
+            "metrics": [NodeMetricSeries.from_dict(_item) for _item in obj["metrics"]] if obj.get("metrics") is not None else None
         })
         return _obj
 

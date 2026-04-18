@@ -17,21 +17,21 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
-from typing_extensions import Annotated
-from amgix_client.models.vector import Vector
+from pydantic import BaseModel, ConfigDict, Field, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
+from amgix_client.models.metrics_bucket import MetricsBucket
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class CustomVector(BaseModel):
+class MetricTrend(BaseModel):
     """
-    Base custom vector model for search queries
+    Historical buckets for a single metric key at a given resolution.
     """ # noqa: E501
-    vector_name: Annotated[str, Field(strict=True, max_length=100)] = Field(description="Name of the vector (must match collection config)")
-    vector: Vector
-    __properties: ClassVar[List[str]] = ["vector_name", "vector"]
+    key: StrictStr = Field(description="Metric key")
+    bucket_seconds: StrictInt = Field(description="Bucket resolution in seconds")
+    buckets: Optional[List[MetricsBucket]] = Field(default=None, description="Buckets ordered by bucket_start ascending")
+    __properties: ClassVar[List[str]] = ["key", "bucket_seconds", "buckets"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,7 +51,7 @@ class CustomVector(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of CustomVector from a JSON string"""
+        """Create an instance of MetricTrend from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,14 +72,18 @@ class CustomVector(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of vector
-        if self.vector:
-            _dict['vector'] = self.vector.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in buckets (list)
+        _items = []
+        if self.buckets:
+            for _item_buckets in self.buckets:
+                if _item_buckets:
+                    _items.append(_item_buckets.to_dict())
+            _dict['buckets'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of CustomVector from a dict"""
+        """Create an instance of MetricTrend from a dict"""
         if obj is None:
             return None
 
@@ -87,8 +91,9 @@ class CustomVector(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "vector_name": obj.get("vector_name"),
-            "vector": Vector.from_dict(obj["vector"]) if obj.get("vector") is not None else None
+            "key": obj.get("key"),
+            "bucket_seconds": obj.get("bucket_seconds"),
+            "buckets": [MetricsBucket.from_dict(_item) for _item in obj["buckets"]] if obj.get("buckets") is not None else None
         })
         return _obj
 

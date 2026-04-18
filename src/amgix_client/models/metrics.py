@@ -18,20 +18,18 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
-from typing_extensions import Annotated
-from amgix_client.models.vector import Vector
+from typing import Any, ClassVar, Dict, List, Optional
+from amgix_client.models.node_view import NodeView
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class CustomVector(BaseModel):
+class Metrics(BaseModel):
     """
-    Base custom vector model for search queries
+    Latest metrics state as persisted by the encoder leader.
     """ # noqa: E501
-    vector_name: Annotated[str, Field(strict=True, max_length=100)] = Field(description="Name of the vector (must match collection config)")
-    vector: Vector
-    __properties: ClassVar[List[str]] = ["vector_name", "vector"]
+    nodes: Optional[Dict[str, NodeView]] = Field(default=None, description="Map of node ID to node snapshot for all nodes that have reported within the expiry window")
+    __properties: ClassVar[List[str]] = ["nodes"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,7 +49,7 @@ class CustomVector(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of CustomVector from a JSON string"""
+        """Create an instance of Metrics from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,14 +70,18 @@ class CustomVector(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of vector
-        if self.vector:
-            _dict['vector'] = self.vector.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each value in nodes (dict)
+        _field_dict = {}
+        if self.nodes:
+            for _key_nodes in self.nodes:
+                if self.nodes[_key_nodes]:
+                    _field_dict[_key_nodes] = self.nodes[_key_nodes].to_dict()
+            _dict['nodes'] = _field_dict
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of CustomVector from a dict"""
+        """Create an instance of Metrics from a dict"""
         if obj is None:
             return None
 
@@ -87,8 +89,12 @@ class CustomVector(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "vector_name": obj.get("vector_name"),
-            "vector": Vector.from_dict(obj["vector"]) if obj.get("vector") is not None else None
+            "nodes": dict(
+                (_k, NodeView.from_dict(_v))
+                for _k, _v in obj["nodes"].items()
+            )
+            if obj.get("nodes") is not None
+            else None
         })
         return _obj
 

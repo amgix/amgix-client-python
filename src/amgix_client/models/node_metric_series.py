@@ -17,21 +17,22 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
-from typing_extensions import Annotated
-from amgix_client.models.vector import Vector
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional, Union
+from amgix_client.models.window_sample import WindowSample
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class CustomVector(BaseModel):
+class NodeMetricSeries(BaseModel):
     """
-    Base custom vector model for search queries
+    One metric stream on a node with mergeable window stats.  key is the metric name (e.g. 'batches', 'inference_ms', 'inference_origin_ms', 'hops'). dims are optional dimensions (e.g. vector type, model name, revision). windows are keyed by window size in seconds.
     """ # noqa: E501
-    vector_name: Annotated[str, Field(strict=True, max_length=100)] = Field(description="Name of the vector (must match collection config)")
-    vector: Vector
-    __properties: ClassVar[List[str]] = ["vector_name", "vector"]
+    key: StrictStr = Field(description="Metric name")
+    dims: Optional[List[StrictStr]] = Field(default=None, description="Optional metric dimensions")
+    windows: Optional[Dict[str, WindowSample]] = Field(default=None, description="Rolling-window snapshots keyed by window size in seconds")
+    last_seen: Optional[Union[StrictFloat, StrictInt]] = Field(default=None, description="UTC timestamp (time.time()) of the most recent sample for this series")
+    __properties: ClassVar[List[str]] = ["key", "dims", "windows", "last_seen"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,7 +52,7 @@ class CustomVector(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of CustomVector from a JSON string"""
+        """Create an instance of NodeMetricSeries from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,14 +73,18 @@ class CustomVector(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of vector
-        if self.vector:
-            _dict['vector'] = self.vector.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each value in windows (dict)
+        _field_dict = {}
+        if self.windows:
+            for _key_windows in self.windows:
+                if self.windows[_key_windows]:
+                    _field_dict[_key_windows] = self.windows[_key_windows].to_dict()
+            _dict['windows'] = _field_dict
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of CustomVector from a dict"""
+        """Create an instance of NodeMetricSeries from a dict"""
         if obj is None:
             return None
 
@@ -87,8 +92,15 @@ class CustomVector(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "vector_name": obj.get("vector_name"),
-            "vector": Vector.from_dict(obj["vector"]) if obj.get("vector") is not None else None
+            "key": obj.get("key"),
+            "dims": obj.get("dims"),
+            "windows": dict(
+                (_k, WindowSample.from_dict(_v))
+                for _k, _v in obj["windows"].items()
+            )
+            if obj.get("windows") is not None
+            else None,
+            "last_seen": obj.get("last_seen")
         })
         return _obj
 
