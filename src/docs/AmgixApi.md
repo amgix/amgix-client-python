@@ -9,6 +9,7 @@ Method | HTTP request | Description
 [**delete_collection**](AmgixApi.md#delete_collection) | **DELETE** /v1/collections/{collection_name} | Delete Collection
 [**delete_collection_queue**](AmgixApi.md#delete_collection_queue) | **DELETE** /v1/collections/{collection_name}/queue | Delete Collection Queue
 [**delete_document**](AmgixApi.md#delete_document) | **DELETE** /v1/collections/{collection_name}/documents/{document_id} | Delete Document
+[**delete_document_sync**](AmgixApi.md#delete_document_sync) | **DELETE** /v1/collections/{collection_name}/documents/{document_id}/sync | Delete Document Sync
 [**empty_collection**](AmgixApi.md#empty_collection) | **POST** /v1/collections/{collection_name}/empty | Empty Collection
 [**get_collection_config**](AmgixApi.md#get_collection_config) | **GET** /v1/collections/{collection_name} | Get Collection Config
 [**get_collection_queue_info**](AmgixApi.md#get_collection_queue_info) | **GET** /v1/collections/{collection_name}/queue/info | Get Collection Queue Info
@@ -343,13 +344,13 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **delete_document**
-> OkResponse delete_document(collection_name, document_id)
+> OkResponse delete_document(collection_name, document_id, request_timestamp)
 
 Delete Document
 
-Delete a document.
+Delete a document asynchronously.
 
-Deletes a specific document by its ID from the specified collection.
+Queues a document for deletion and returns immediately. The document will be deleted asynchronously.
 
 Args:
     collection_name: The name of the collection.
@@ -380,10 +381,11 @@ async with amgix_client.ApiClient(configuration) as api_client:
     api_instance = amgix_client.AmgixApi(api_client)
     collection_name = 'collection_name_example' # str | Collection name (alphanumeric, underscores, hyphens only)
     document_id = 'document_id_example' # str | 
+    request_timestamp = '2013-10-20T19:20:30+01:00' # datetime | Caller-supplied delete timestamp (UTC)
 
     try:
         # Delete Document
-        api_response = await api_instance.delete_document(collection_name, document_id)
+        api_response = await api_instance.delete_document(collection_name, document_id, request_timestamp)
         print("The response of AmgixApi->delete_document:\n")
         pprint(api_response)
     except Exception as e:
@@ -399,6 +401,89 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **collection_name** | **str**| Collection name (alphanumeric, underscores, hyphens only) | 
  **document_id** | **str**|  | 
+ **request_timestamp** | **datetime**| Caller-supplied delete timestamp (UTC) | 
+
+### Return type
+
+[**OkResponse**](OkResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **delete_document_sync**
+> OkResponse delete_document_sync(collection_name, document_id, request_timestamp)
+
+Delete Document Sync
+
+Delete a document synchronously.
+
+Deletes a specific document by its ID from the specified collection and waits for the operation to complete.
+
+Args:
+    collection_name: The name of the collection.
+    document_id: The unique identifier of the document to delete.
+
+Returns:
+    An `OkResponse` object indicating the success of the operation.
+
+### Example
+
+
+```python
+import amgix_client
+from amgix_client.models.ok_response import OkResponse
+from amgix_client.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost:8234
+# See configuration.py for a list of all supported configuration parameters.
+configuration = amgix_client.Configuration(
+    host = "http://localhost:8234"
+)
+
+
+# Enter a context with an instance of the API client
+async with amgix_client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = amgix_client.AmgixApi(api_client)
+    collection_name = 'collection_name_example' # str | Collection name (alphanumeric, underscores, hyphens only)
+    document_id = 'document_id_example' # str | 
+    request_timestamp = '2013-10-20T19:20:30+01:00' # datetime | Caller-supplied delete timestamp (UTC)
+
+    try:
+        # Delete Document Sync
+        api_response = await api_instance.delete_document_sync(collection_name, document_id, request_timestamp)
+        print("The response of AmgixApi->delete_document_sync:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling AmgixApi->delete_document_sync: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **collection_name** | **str**| Collection name (alphanumeric, underscores, hyphens only) | 
+ **document_id** | **str**|  | 
+ **request_timestamp** | **datetime**| Caller-supplied delete timestamp (UTC) | 
 
 ### Return type
 

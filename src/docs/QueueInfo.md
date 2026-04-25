@@ -6,9 +6,12 @@ Queue statistics for a collection. Provides counts of documents in different que
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**queued** | **int** | Number of documents queued for processing | 
-**requeued** | **int** | Number of documents requeued after failure | 
-**failed** | **int** | Number of failed documents | 
+**queued_upsert** | **int** | Number of upsert queue entries queued for processing | 
+**queued_delete** | **int** | Number of delete queue entries queued for processing | 
+**requeued_upsert** | **int** | Number of upsert queue entries requeued after failure | 
+**requeued_delete** | **int** | Number of delete queue entries requeued after failure | 
+**failed_upsert** | **int** | Number of failed upsert queue entries | 
+**failed_delete** | **int** | Number of failed delete queue entries | 
 **total** | **int** | Total number of queue entries | 
 
 ## Example

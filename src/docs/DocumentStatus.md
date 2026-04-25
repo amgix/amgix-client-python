@@ -7,6 +7,7 @@ Individual status entry for a document.
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **status** | **str** | Status of the document (queued, requeued, indexed, failed) | 
+**op_type** | **str** | Queue operation type (upsert or delete) for queue-related statuses | [optional] 
 **info** | **str** | Status information | [optional] 
 **timestamp** | **datetime** | When this status occurred | 
 **queue_id** | **str** | Queue entry ID (only for queue-related statuses) | [optional] 
