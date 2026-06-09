@@ -11,10 +11,12 @@ Name | Type | Description | Notes
 **tags** | **List[str]** | List of document tags (max 50 items; each max 100 characters; cannot contain pipe characters) | [optional] 
 **name** | **str** | Document name (max 1500 characters) | [optional] 
 **description** | **str** | Brief description of the document (max 3000 characters) | [optional] 
-**metadata** | **Dict[str, object]** | Dictionary of metadata key-value pairs. Values can be simple types (string, int, float, bool) or MetaValue objects (required for datetime) | [optional] 
+**content** | **str** |  | [optional] 
+**metadata** | **Dict[str, object]** | Dictionary of metadata key-value pairs. Datetime values require explicit {value, type} form; objects may be plain dicts. | [optional] 
 **custom_vectors** | [**List[CustomDocumentVector]**](CustomDocumentVector.md) | Pre-generated custom vectors for this document (optional) | [optional] 
 **score** | **float** | The relevance score for this document | 
 **vector_scores** | [**List[VectorScore]**](VectorScore.md) | Raw per-vector scores with field, vector, score, and rank information | [optional] 
+**joined** | **Dict[str, List[Document]]** | Documents from joined collections, keyed by collection name | [optional] 
 
 ## Example
 

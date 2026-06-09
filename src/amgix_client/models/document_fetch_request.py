@@ -18,23 +18,23 @@ import re  # noqa: F401
 import json
 
 from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, List
+from typing import Any, ClassVar, Dict, List, Optional
 from typing_extensions import Annotated
+from amgix_client.models.metadata_filter import MetadataFilter
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class SystemInfoResponse(BaseModel):
+class DocumentFetchRequest(BaseModel):
     """
-    SystemInfoResponse
+    Request body for paginated document fetching.
     """ # noqa: E501
-    amgix_version: StrictStr = Field(description="API / deployment version string")
-    database_kind: StrictStr = Field(description="Database product derived from configured URL scheme (no connection string)")
-    database_version: StrictStr = Field(description="Version reported by the database backend after probe")
-    database_features: Dict[str, StrictBool] = Field(description="Feature flags detected at probe time (e.g. dense vector support)")
-    rabbitmq_version: StrictStr = Field(description="AMQP broker version from Connection.Start server_properties (e.g. RabbitMQ)")
-    collection_count: Annotated[int, Field(strict=True, ge=0)] = Field(description="Number of user collections")
-    __properties: ClassVar[List[str]] = ["amgix_version", "database_kind", "database_version", "database_features", "rabbitmq_version", "collection_count"]
+    page_size: Optional[Annotated[int, Field(le=1000, strict=True, ge=1)]] = Field(default=100, description="Number of documents per page (1 to 1000)")
+    after: Optional[StrictStr] = Field(default=None, description="Pagination token returned by a previous fetch call. Omit or set to null to start from the beginning.")
+    metadata_filter: Optional[MetadataFilter] = None
+    document_tags: Optional[Annotated[List[StrictStr], Field(max_length=50)]] = Field(default=None, description="Optional filter to include only documents with specific tags (max 50 tags).")
+    document_tags_match_all: Optional[StrictBool] = Field(default=False, description="If True, documents must have ALL specified tags (AND). If False, ANY (OR).")
+    __properties: ClassVar[List[str]] = ["page_size", "after", "metadata_filter", "document_tags", "document_tags_match_all"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -54,7 +54,7 @@ class SystemInfoResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SystemInfoResponse from a JSON string"""
+        """Create an instance of DocumentFetchRequest from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -75,11 +75,14 @@ class SystemInfoResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of metadata_filter
+        if self.metadata_filter:
+            _dict['metadata_filter'] = self.metadata_filter.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SystemInfoResponse from a dict"""
+        """Create an instance of DocumentFetchRequest from a dict"""
         if obj is None:
             return None
 
@@ -87,12 +90,11 @@ class SystemInfoResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "amgix_version": obj.get("amgix_version"),
-            "database_kind": obj.get("database_kind"),
-            "database_version": obj.get("database_version"),
-            "database_features": obj.get("database_features"),
-            "rabbitmq_version": obj.get("rabbitmq_version"),
-            "collection_count": obj.get("collection_count")
+            "page_size": obj.get("page_size") if obj.get("page_size") is not None else 100,
+            "after": obj.get("after"),
+            "metadata_filter": MetadataFilter.from_dict(obj["metadata_filter"]) if obj.get("metadata_filter") is not None else None,
+            "document_tags": obj.get("document_tags"),
+            "document_tags_match_all": obj.get("document_tags_match_all") if obj.get("document_tags_match_all") is not None else False
         })
         return _obj
 

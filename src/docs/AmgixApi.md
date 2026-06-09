@@ -11,6 +11,7 @@ Method | HTTP request | Description
 [**delete_document**](AmgixApi.md#delete_document) | **DELETE** /v1/collections/{collection_name}/documents/{document_id} | Delete Document
 [**delete_document_sync**](AmgixApi.md#delete_document_sync) | **DELETE** /v1/collections/{collection_name}/documents/{document_id}/sync | Delete Document Sync
 [**empty_collection**](AmgixApi.md#empty_collection) | **POST** /v1/collections/{collection_name}/empty | Empty Collection
+[**fetch_documents**](AmgixApi.md#fetch_documents) | **POST** /v1/collections/{collection_name}/documents/fetch | Fetch Documents
 [**get_collection_config**](AmgixApi.md#get_collection_config) | **GET** /v1/collections/{collection_name} | Get Collection Config
 [**get_collection_queue_info**](AmgixApi.md#get_collection_queue_info) | **GET** /v1/collections/{collection_name}/queue/info | Get Collection Queue Info
 [**get_collection_stats**](AmgixApi.md#get_collection_stats) | **GET** /v1/collections/{collection_name}/stats | Get Collection Stats
@@ -574,6 +575,93 @@ No authorization required
 ### HTTP request headers
 
  - **Content-Type**: Not defined
+ - **Accept**: application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Successful Response |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
+# **fetch_documents**
+> DocumentFetchResponse fetch_documents(collection_name, document_fetch_request)
+
+Fetch Documents
+
+Fetch a page of documents from a collection.
+
+Returns documents in stable internal order with cursor-based pagination.
+Pass the returned `after` token in the next request to get the following page.
+`after` is null when there are no more documents.
+
+Args:
+    collection_name: The name of the collection.
+    body: Pagination and filter parameters.
+
+Returns:
+    A `DocumentFetchResponse` with a page of documents and a pagination token.
+
+Raises:
+    HTTPException: 404 if the collection does not exist.
+    HTTPException: 400 if a filter references an unindexed metadata key.
+
+### Example
+
+
+```python
+import amgix_client
+from amgix_client.models.document_fetch_request import DocumentFetchRequest
+from amgix_client.models.document_fetch_response import DocumentFetchResponse
+from amgix_client.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost:8234
+# See configuration.py for a list of all supported configuration parameters.
+configuration = amgix_client.Configuration(
+    host = "http://localhost:8234"
+)
+
+
+# Enter a context with an instance of the API client
+async with amgix_client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = amgix_client.AmgixApi(api_client)
+    collection_name = 'collection_name_example' # str | Collection name (alphanumeric, underscores, hyphens only)
+    document_fetch_request = amgix_client.DocumentFetchRequest() # DocumentFetchRequest | 
+
+    try:
+        # Fetch Documents
+        api_response = await api_instance.fetch_documents(collection_name, document_fetch_request)
+        print("The response of AmgixApi->fetch_documents:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling AmgixApi->fetch_documents: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **collection_name** | **str**| Collection name (alphanumeric, underscores, hyphens only) | 
+ **document_fetch_request** | [**DocumentFetchRequest**](DocumentFetchRequest.md)|  | 
+
+### Return type
+
+[**DocumentFetchResponse**](DocumentFetchResponse.md)
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: application/json
  - **Accept**: application/json
 
 ### HTTP response details

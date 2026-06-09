@@ -8,6 +8,8 @@ Name | Type | Description | Notes
 **loc** | [**List[ValidationErrorLocItem]**](ValidationErrorLocItem.md) |  | 
 **msg** | **str** |  | 
 **type** | **str** |  | 
+**input** | **object** |  | [optional] 
+**ctx** | **object** |  | [optional] 
 
 ## Example
 

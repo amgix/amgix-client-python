@@ -14,7 +14,7 @@ Name | Type | Description | Notes
 **query_revision** | **str** | Optional model revision for query vectorization (max 210 characters). If not specified, uses &#39;revision&#39; for both documents and queries. | [optional] 
 **dimensions** | **int** | Dimensions for the vector. Required for dense_custom vectors. For dense_model vectors, auto-detected if not specified. | [optional] 
 **top_k** | **int** | Number of top-scoring terms to keep for sparse vectors. Used by sparse_model, full_text, trigrams, whitespace, wmtr, and sparse_custom vectors. Ignored by dense vectors. | [optional] [default to 128]
-**wmtr_word_weight** | **int** | Percentage of WMTR top_k allocated to word weights. | [optional] [default to 80]
+**wmtr_word_ratio** | **int** | Percentage of WMTR top_k allocated to word weights. | [optional] [default to 80]
 **index_fields** | **List[str]** | List of fields to index with this vector (name, description, content). Defaults to [&#39;content&#39;] if not specified. | [optional] 
 **language_default_code** | **str** | Two-letter ISO 639-1 language code for language-based vector types (e.g., &#39;en&#39;, &#39;es&#39;, &#39;fr&#39;) | [optional] [default to 'en']
 **language_detect** | **bool** | Whether to automatically detect language for language-based vector types | [optional] [default to False]

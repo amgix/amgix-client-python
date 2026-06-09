@@ -1,12 +1,12 @@
 # CollectionConfig
 
-API model for collection configuration - uses VectorConfig.
+API model for collection configuration - uses VectorConfig.  If ``vectors`` is omitted or empty a single noop vector is injected automatically, creating a payload-only collection.
 
 ## Properties
 
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
-**vectors** | [**List[VectorConfig]**](VectorConfig.md) | List of vector configurations for this collection | 
+**vectors** | [**List[VectorConfig]**](VectorConfig.md) | List of vector configurations for this collection | [optional] 
 **store_content** | **bool** | Whether to store document content in the database. | [optional] [default to True]
 **metadata_indexes** | [**List[MetadataIndex]**](MetadataIndex.md) | List of metadata fields to index for filtering and sorting | [optional] 
 

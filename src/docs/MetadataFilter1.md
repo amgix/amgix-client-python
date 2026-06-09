@@ -1,6 +1,6 @@
-# MetadataFilter
+# MetadataFilter1
 
-Optional metadata filter. Accepts a MetadataFilter object or a filter expression string.
+Optional metadata filter. Accepts either a MetadataFilter object or a filter expression string (e.g. 'year > 2020 AND status = \"active\"'). Only fields declared in collection metadata_indexes can be filtered.
 
 ## Properties
 
@@ -16,19 +16,19 @@ Name | Type | Description | Notes
 ## Example
 
 ```python
-from amgix_client.models.metadata_filter import MetadataFilter
+from amgix_client.models.metadata_filter1 import MetadataFilter1
 
 # TODO update the JSON string below
 json = "{}"
-# create an instance of MetadataFilter from a JSON string
-metadata_filter_instance = MetadataFilter.from_json(json)
+# create an instance of MetadataFilter1 from a JSON string
+metadata_filter1_instance = MetadataFilter1.from_json(json)
 # print the JSON string representation of the object
-print(MetadataFilter.to_json())
+print(MetadataFilter1.to_json())
 
 # convert the object into a dict
-metadata_filter_dict = metadata_filter_instance.to_dict()
-# create an instance of MetadataFilter from a dict
-metadata_filter_from_dict = MetadataFilter.from_dict(metadata_filter_dict)
+metadata_filter1_dict = metadata_filter1_instance.to_dict()
+# create an instance of MetadataFilter1 from a dict
+metadata_filter1_from_dict = MetadataFilter1.from_dict(metadata_filter1_dict)
 ```
 [[Back to Model list]](../README.md#documentation-for-models) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to README]](../README.md)
 

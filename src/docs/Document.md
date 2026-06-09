@@ -12,7 +12,7 @@ Name | Type | Description | Notes
 **name** | **str** | Document name (max 1500 characters) | [optional] 
 **description** | **str** | Brief description of the document (max 3000 characters) | [optional] 
 **content** | **str** | Main content of the document (max 1000000 characters) | [optional] 
-**metadata** | **Dict[str, object]** | Dictionary of metadata key-value pairs. Values can be simple types (string, int, float, bool) or MetaValue objects (required for datetime) | [optional] 
+**metadata** | **Dict[str, object]** | Dictionary of metadata key-value pairs. Datetime values require explicit {value, type} form; objects may be plain dicts. | [optional] 
 **custom_vectors** | [**List[CustomDocumentVector]**](CustomDocumentVector.md) | Pre-generated custom vectors for this document (optional) | [optional] 
 
 ## Example

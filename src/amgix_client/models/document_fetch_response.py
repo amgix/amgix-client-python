@@ -17,24 +17,20 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictBool, StrictStr
-from typing import Any, ClassVar, Dict, List
-from typing_extensions import Annotated
+from pydantic import BaseModel, ConfigDict, Field, StrictStr
+from typing import Any, ClassVar, Dict, List, Optional
+from amgix_client.models.document import Document
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class SystemInfoResponse(BaseModel):
+class DocumentFetchResponse(BaseModel):
     """
-    SystemInfoResponse
+    Response for paginated document fetching.
     """ # noqa: E501
-    amgix_version: StrictStr = Field(description="API / deployment version string")
-    database_kind: StrictStr = Field(description="Database product derived from configured URL scheme (no connection string)")
-    database_version: StrictStr = Field(description="Version reported by the database backend after probe")
-    database_features: Dict[str, StrictBool] = Field(description="Feature flags detected at probe time (e.g. dense vector support)")
-    rabbitmq_version: StrictStr = Field(description="AMQP broker version from Connection.Start server_properties (e.g. RabbitMQ)")
-    collection_count: Annotated[int, Field(strict=True, ge=0)] = Field(description="Number of user collections")
-    __properties: ClassVar[List[str]] = ["amgix_version", "database_kind", "database_version", "database_features", "rabbitmq_version", "collection_count"]
+    documents: List[Document] = Field(description="Page of documents")
+    after: Optional[StrictStr] = Field(default=None, description="Pagination token for the next page. Null when there are no more documents.")
+    __properties: ClassVar[List[str]] = ["documents", "after"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -54,7 +50,7 @@ class SystemInfoResponse(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of SystemInfoResponse from a JSON string"""
+        """Create an instance of DocumentFetchResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -75,11 +71,18 @@ class SystemInfoResponse(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
+        # override the default output from pydantic by calling `to_dict()` of each item in documents (list)
+        _items = []
+        if self.documents:
+            for _item_documents in self.documents:
+                if _item_documents:
+                    _items.append(_item_documents.to_dict())
+            _dict['documents'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of SystemInfoResponse from a dict"""
+        """Create an instance of DocumentFetchResponse from a dict"""
         if obj is None:
             return None
 
@@ -87,12 +90,8 @@ class SystemInfoResponse(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "amgix_version": obj.get("amgix_version"),
-            "database_kind": obj.get("database_kind"),
-            "database_version": obj.get("database_version"),
-            "database_features": obj.get("database_features"),
-            "rabbitmq_version": obj.get("rabbitmq_version"),
-            "collection_count": obj.get("collection_count")
+            "documents": [Document.from_dict(_item) for _item in obj["documents"]] if obj.get("documents") is not None else None,
+            "after": obj.get("after")
         })
         return _obj
 
