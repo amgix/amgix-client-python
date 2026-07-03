@@ -23,11 +23,11 @@ from typing import Union, Any, List, Set, TYPE_CHECKING, Optional, Dict
 from typing_extensions import Literal, Self
 from pydantic import Field
 
-JOIN_ANY_OF_SCHEMAS = ["List[str]", "str"]
+JOIN1_ANY_OF_SCHEMAS = ["List[str]", "str"]
 
-class Join(BaseModel):
+class Join1(BaseModel):
     """
-    Optional join of another collection onto each fetched document. Forms: '<collection>', '<collection>[<parent>=<child>]', or with '(<filter>)'. Parent refs: $id, $.meta.<key>. Child refs: $$id, $$.meta.<key>. Omitted '[]' defaults to [$id=$$id]. Joined documents appear under joined[collection_name].
+    Optional join of another collection onto each search result. Forms: '<collection>', '<collection>[<parent>=<child>]', or with '(<filter>)'. Parent refs: $id, $.meta.<key>. Child refs: $$id, $$.meta.<key>. Omitted '[]' defaults to [$id=$$id]. Joined documents appear under joined[collection_name].
     """
 
     # data type: str
@@ -57,7 +57,7 @@ class Join(BaseModel):
 
     @field_validator('actual_instance')
     def actual_instance_must_validate_anyof(cls, v):
-        instance = Join.model_construct()
+        instance = Join1.model_construct()
         error_messages = []
         # validate data type: str
         try:
@@ -73,7 +73,7 @@ class Join(BaseModel):
             error_messages.append(str(e))
         if error_messages:
             # no match
-            raise ValueError("No match found when setting the actual_instance in Join with anyOf schemas: List[str], str. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when setting the actual_instance in Join1 with anyOf schemas: List[str], str. Details: " + ", ".join(error_messages))
         else:
             return v
 
@@ -107,7 +107,7 @@ class Join(BaseModel):
 
         if error_messages:
             # no match
-            raise ValueError("No match found when deserializing the JSON string into Join with anyOf schemas: List[str], str. Details: " + ", ".join(error_messages))
+            raise ValueError("No match found when deserializing the JSON string into Join1 with anyOf schemas: List[str], str. Details: " + ", ".join(error_messages))
         else:
             return instance
 

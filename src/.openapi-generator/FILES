@@ -21,6 +21,7 @@ amgix_client/models/document_status.py
 amgix_client/models/document_status_response.py
 amgix_client/models/http_validation_error.py
 amgix_client/models/join.py
+amgix_client/models/join1.py
 amgix_client/models/metadata_filter.py
 amgix_client/models/metadata_filter1.py
 amgix_client/models/metadata_index.py
@@ -60,6 +61,7 @@ docs/DocumentStatus.md
 docs/DocumentStatusResponse.md
 docs/HTTPValidationError.md
 docs/Join.md
+docs/Join1.md
 docs/MetadataFilter.md
 docs/MetadataFilter1.md
 docs/MetadataIndex.md

@@ -1,6 +1,6 @@
 # Join
 
-Optional join of another collection onto each search result. Forms: '<collection>', '<collection>[<parent>=<child>]', or with '(<filter>)'. Parent refs: $id, $.meta.<key>. Child refs: $$id, $$.meta.<key>. Omitted '[]' defaults to [$id=$$id]. Joined documents appear under joined[collection_name].
+Optional join of another collection onto each fetched document. Forms: '<collection>', '<collection>[<parent>=<child>]', or with '(<filter>)'. Parent refs: $id, $.meta.<key>. Child refs: $$id, $$.meta.<key>. Omitted '[]' defaults to [$id=$$id]. Joined documents appear under joined[collection_name].
 
 ## Properties
 

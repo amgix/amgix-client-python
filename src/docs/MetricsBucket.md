@@ -12,6 +12,8 @@ Name | Type | Description | Notes
 **bucket_seconds** | **int** | Bucket duration in seconds | 
 **value** | **float** | Mergeable numerator for the bucket | 
 **n** | **int** | Mergeable denominator for average-like metrics | [optional] 
+**hostname** | **str** | Reporting node hostname (historical buckets only) | [optional] 
+**source** | **str** | Reporting node source, e.g. api or index (historical buckets only) | [optional] 
 
 ## Example
 

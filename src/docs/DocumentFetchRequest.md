@@ -11,6 +11,7 @@ Name | Type | Description | Notes
 **metadata_filter** | [**MetadataFilter**](MetadataFilter.md) |  | [optional] 
 **document_tags** | **List[str]** | Optional filter to include only documents with specific tags (max 50 tags). | [optional] 
 **document_tags_match_all** | **bool** | If True, documents must have ALL specified tags (AND). If False, ANY (OR). | [optional] [default to False]
+**join** | [**Join**](Join.md) |  | [optional] 
 
 ## Example
 

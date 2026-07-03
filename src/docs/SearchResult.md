@@ -14,9 +14,9 @@ Name | Type | Description | Notes
 **content** | **str** |  | [optional] 
 **metadata** | **Dict[str, object]** | Dictionary of metadata key-value pairs. Datetime values require explicit {value, type} form; objects may be plain dicts. | [optional] 
 **custom_vectors** | [**List[CustomDocumentVector]**](CustomDocumentVector.md) | Pre-generated custom vectors for this document (optional) | [optional] 
+**joined** | **Dict[str, List[Document]]** | Documents from joined collections, keyed by collection name | [optional] 
 **score** | **float** | The relevance score for this document | 
 **vector_scores** | [**List[VectorScore]**](VectorScore.md) | Raw per-vector scores with field, vector, score, and rank information | [optional] 
-**joined** | **Dict[str, List[Document]]** | Documents from joined collections, keyed by collection name | [optional] 
 
 ## Example
 
