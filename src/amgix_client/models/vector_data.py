@@ -17,28 +17,36 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List
-from typing_extensions import Annotated
-from amgix_client.models.vector import Vector
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class CustomDocumentVector(BaseModel):
+class VectorData(BaseModel):
     """
-    Custom vector for documents - adds field specification
+    Vector data for a specific vector. Contains the precalculated vector values, which can be either dense or sparse.
     """ # noqa: E501
-    vector_name: Annotated[str, Field(strict=True, max_length=100)] = Field(description="Name of the vector (must match collection config)")
-    vector: Vector
-    var_field: StrictStr = Field(description="Document field this vector is for (name, description, or content)", alias="field")
-    __properties: ClassVar[List[str]] = ["vector_name", "vector", "field"]
+    vector_name: StrictStr = Field(description="Name of the vector")
+    var_field: StrictStr = Field(description="Field this vector is for (name, description, content)", alias="field")
+    vector_type: StrictStr = Field(description="Type of vector (dense_model, sparse_model, full_text, trigrams, whitespace, wmtr, dense_custom, sparse_custom)")
+    dense_vector: Optional[List[Union[StrictFloat, StrictInt]]] = Field(default=None, description="Dense vector values as a list of floats")
+    sparse_indices: Optional[List[StrictInt]] = Field(default=None, description="Sparse vector indices (token positions)")
+    sparse_values: Optional[List[Union[StrictFloat, StrictInt]]] = Field(default=None, description="Sparse vector values (token weights)")
+    __properties: ClassVar[List[str]] = ["vector_name", "field", "vector_type", "dense_vector", "sparse_indices", "sparse_values"]
 
     @field_validator('var_field')
     def var_field_validate_enum(cls, value):
         """Validates the enum"""
         if value not in set(['name', 'description', 'content']):
             raise ValueError("must be one of enum values ('name', 'description', 'content')")
+        return value
+
+    @field_validator('vector_type')
+    def vector_type_validate_enum(cls, value):
+        """Validates the enum"""
+        if value not in set(['dense_model', 'sparse_model', 'full_text', 'trigrams', 'whitespace', 'wmtr', 'keyword', 'dense_custom', 'sparse_custom', 'noop']):
+            raise ValueError("must be one of enum values ('dense_model', 'sparse_model', 'full_text', 'trigrams', 'whitespace', 'wmtr', 'keyword', 'dense_custom', 'sparse_custom', 'noop')")
         return value
 
     model_config = ConfigDict(
@@ -59,7 +67,7 @@ class CustomDocumentVector(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of CustomDocumentVector from a JSON string"""
+        """Create an instance of VectorData from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -80,14 +88,11 @@ class CustomDocumentVector(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of vector
-        if self.vector:
-            _dict['vector'] = self.vector.to_dict()
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of CustomDocumentVector from a dict"""
+        """Create an instance of VectorData from a dict"""
         if obj is None:
             return None
 
@@ -96,8 +101,11 @@ class CustomDocumentVector(BaseModel):
 
         _obj = cls.model_validate({
             "vector_name": obj.get("vector_name"),
-            "vector": Vector.from_dict(obj["vector"]) if obj.get("vector") is not None else None,
-            "field": obj.get("field")
+            "field": obj.get("field"),
+            "vector_type": obj.get("vector_type"),
+            "dense_vector": obj.get("dense_vector"),
+            "sparse_indices": obj.get("sparse_indices"),
+            "sparse_values": obj.get("sparse_values")
         })
         return _obj
 

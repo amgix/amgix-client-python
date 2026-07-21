@@ -17,22 +17,22 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field, StrictStr, field_validator
-from typing import Any, ClassVar, Dict, List
-from typing_extensions import Annotated
-from amgix_client.models.vector import Vector
+from pydantic import BaseModel, ConfigDict, Field, StrictFloat, StrictInt, StrictStr, field_validator
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class CustomDocumentVector(BaseModel):
+class VectorSearchOption(BaseModel):
     """
-    Custom vector for documents - adds field specification
+    Configuration for a vector search option. Used in search queries to specify which vectors to search with and their weights.
     """ # noqa: E501
-    vector_name: Annotated[str, Field(strict=True, max_length=100)] = Field(description="Name of the vector (must match collection config)")
-    vector: Vector
-    var_field: StrictStr = Field(description="Document field this vector is for (name, description, or content)", alias="field")
-    __properties: ClassVar[List[str]] = ["vector_name", "vector", "field"]
+    vector_name: StrictStr = Field(description="Name of the vector to search with")
+    weight: Optional[Union[StrictFloat, StrictInt]] = Field(default=1.0, description="Weight to apply to this vector's search results")
+    var_field: StrictStr = Field(description="Field to search with this vector (name, description, content)", alias="field")
+    wmtr_trigram_weight: Optional[Union[StrictFloat, StrictInt]] = Field(default=1.0, description="WMTR trigram channel multiplier for this vector option (used when vector_name is a WMTR vector).")
+    additional_properties: Dict[str, Any] = {}
+    __properties: ClassVar[List[str]] = ["vector_name", "weight", "field", "wmtr_trigram_weight"]
 
     @field_validator('var_field')
     def var_field_validate_enum(cls, value):
@@ -59,7 +59,7 @@ class CustomDocumentVector(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of CustomDocumentVector from a JSON string"""
+        """Create an instance of VectorSearchOption from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -71,8 +71,10 @@ class CustomDocumentVector(BaseModel):
         * `None` is only added to the output dict for nullable fields that
           were set at model initialization. Other fields with value `None`
           are ignored.
+        * Fields in `self.additional_properties` are added to the output dict.
         """
         excluded_fields: Set[str] = set([
+            "additional_properties",
         ])
 
         _dict = self.model_dump(
@@ -80,14 +82,16 @@ class CustomDocumentVector(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of vector
-        if self.vector:
-            _dict['vector'] = self.vector.to_dict()
+        # puts key-value pairs in additional_properties in the top level
+        if self.additional_properties is not None:
+            for _key, _value in self.additional_properties.items():
+                _dict[_key] = _value
+
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of CustomDocumentVector from a dict"""
+        """Create an instance of VectorSearchOption from a dict"""
         if obj is None:
             return None
 
@@ -96,9 +100,15 @@ class CustomDocumentVector(BaseModel):
 
         _obj = cls.model_validate({
             "vector_name": obj.get("vector_name"),
-            "vector": Vector.from_dict(obj["vector"]) if obj.get("vector") is not None else None,
-            "field": obj.get("field")
+            "weight": obj.get("weight") if obj.get("weight") is not None else 1.0,
+            "field": obj.get("field"),
+            "wmtr_trigram_weight": obj.get("wmtr_trigram_weight") if obj.get("wmtr_trigram_weight") is not None else 1.0
         })
+        # store additional fields in additional_properties
+        for _key in obj.keys():
+            if _key not in cls.__properties:
+                _obj.additional_properties[_key] = obj.get(_key)
+
         return _obj
 
 

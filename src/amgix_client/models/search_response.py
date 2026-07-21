@@ -17,21 +17,22 @@ import pprint
 import re  # noqa: F401
 import json
 
-from pydantic import BaseModel, ConfigDict, Field
-from typing import Any, ClassVar, Dict, List
+from pydantic import BaseModel, ConfigDict, Field, StrictInt
+from typing import Any, ClassVar, Dict, List, Optional, Union
 from typing_extensions import Annotated
-from amgix_client.models.vector import Vector
+from amgix_client.models.search_result import SearchResult
 from typing import Optional, Set
 from typing_extensions import Self
 from pydantic_core import to_jsonable_python
 
-class CustomVector(BaseModel):
+class SearchResponse(BaseModel):
     """
-    Base custom vector model for search queries
+    Response from a search query.
     """ # noqa: E501
-    vector_name: Annotated[str, Field(strict=True, max_length=100)] = Field(description="Name of the vector (must match collection config)")
-    vector: Vector
-    __properties: ClassVar[List[str]] = ["vector_name", "vector"]
+    results: List[SearchResult] = Field(description="Search hits, ordered by relevance")
+    facet_counts: Optional[Dict[str, Dict[str, StrictInt]]] = Field(default=None, description="Per-facet-field value counts over the search candidate pool. Only present when facets was True in the request. Keys are metadata field names; inner keys are stringified facet values; inner values are candidate counts.")
+    query_time_ms: Union[Annotated[float, Field(strict=True, ge=0.0)], Annotated[int, Field(strict=True, ge=0)]] = Field(description="Server-side time to execute this search, in milliseconds")
+    __properties: ClassVar[List[str]] = ["results", "facet_counts", "query_time_ms"]
 
     model_config = ConfigDict(
         validate_by_name=True,
@@ -51,7 +52,7 @@ class CustomVector(BaseModel):
 
     @classmethod
     def from_json(cls, json_str: str) -> Optional[Self]:
-        """Create an instance of CustomVector from a JSON string"""
+        """Create an instance of SearchResponse from a JSON string"""
         return cls.from_dict(json.loads(json_str))
 
     def to_dict(self) -> Dict[str, Any]:
@@ -72,14 +73,18 @@ class CustomVector(BaseModel):
             exclude=excluded_fields,
             exclude_none=True,
         )
-        # override the default output from pydantic by calling `to_dict()` of vector
-        if self.vector:
-            _dict['vector'] = self.vector.to_dict()
+        # override the default output from pydantic by calling `to_dict()` of each item in results (list)
+        _items = []
+        if self.results:
+            for _item_results in self.results:
+                if _item_results:
+                    _items.append(_item_results.to_dict())
+            _dict['results'] = _items
         return _dict
 
     @classmethod
     def from_dict(cls, obj: Optional[Dict[str, Any]]) -> Optional[Self]:
-        """Create an instance of CustomVector from a dict"""
+        """Create an instance of SearchResponse from a dict"""
         if obj is None:
             return None
 
@@ -87,8 +92,9 @@ class CustomVector(BaseModel):
             return cls.model_validate(obj)
 
         _obj = cls.model_validate({
-            "vector_name": obj.get("vector_name"),
-            "vector": Vector.from_dict(obj["vector"]) if obj.get("vector") is not None else None
+            "results": [SearchResult.from_dict(_item) for _item in obj["results"]] if obj.get("results") is not None else None,
+            "facet_counts": obj.get("facet_counts"),
+            "query_time_ms": obj.get("query_time_ms")
         })
         return _obj
 

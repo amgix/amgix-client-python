@@ -11,6 +11,7 @@ Method | HTTP request | Description
 [**delete_document**](AmgixApi.md#delete_document) | **DELETE** /v1/collections/{collection_name}/documents/{document_id} | Delete Document
 [**delete_document_sync**](AmgixApi.md#delete_document_sync) | **DELETE** /v1/collections/{collection_name}/documents/{document_id}/sync | Delete Document Sync
 [**empty_collection**](AmgixApi.md#empty_collection) | **POST** /v1/collections/{collection_name}/empty | Empty Collection
+[**export_documents**](AmgixApi.md#export_documents) | **GET** /v1/collections/{collection_name}/documents/export | Export Documents
 [**fetch_documents**](AmgixApi.md#fetch_documents) | **POST** /v1/collections/{collection_name}/documents/fetch | Fetch Documents
 [**get_collection_config**](AmgixApi.md#get_collection_config) | **GET** /v1/collections/{collection_name} | Get Collection Config
 [**get_collection_queue_info**](AmgixApi.md#get_collection_queue_info) | **GET** /v1/collections/{collection_name}/queue/info | Get Collection Queue Info
@@ -586,6 +587,79 @@ No authorization required
 
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
+# **export_documents**
+> bytes export_documents(collection_name, with_vectors=with_vectors)
+
+Export Documents
+
+Export all documents in a collection as a downloadable gzip-compressed JSON array.
+
+Streams ``[{...},{...},...]`` without loading the full collection into memory.
+
+### Example
+
+
+```python
+import amgix_client
+from amgix_client.rest import ApiException
+from pprint import pprint
+
+# Defining the host is optional and defaults to http://localhost:8234
+# See configuration.py for a list of all supported configuration parameters.
+configuration = amgix_client.Configuration(
+    host = "http://localhost:8234"
+)
+
+
+# Enter a context with an instance of the API client
+async with amgix_client.ApiClient(configuration) as api_client:
+    # Create an instance of the API class
+    api_instance = amgix_client.AmgixApi(api_client)
+    collection_name = 'collection_name_example' # str | Collection name (alphanumeric, underscores, hyphens only)
+    with_vectors = False # bool | When true, include stored vector values on each exported document. (optional) (default to False)
+
+    try:
+        # Export Documents
+        api_response = await api_instance.export_documents(collection_name, with_vectors=with_vectors)
+        print("The response of AmgixApi->export_documents:\n")
+        pprint(api_response)
+    except Exception as e:
+        print("Exception when calling AmgixApi->export_documents: %s\n" % e)
+```
+
+
+
+### Parameters
+
+
+Name | Type | Description  | Notes
+------------- | ------------- | ------------- | -------------
+ **collection_name** | **str**| Collection name (alphanumeric, underscores, hyphens only) | 
+ **with_vectors** | **bool**| When true, include stored vector values on each exported document. | [optional] [default to False]
+
+### Return type
+
+**bytes**
+
+### Authorization
+
+No authorization required
+
+### HTTP request headers
+
+ - **Content-Type**: Not defined
+ - **Accept**: application/gzip, application/json
+
+### HTTP response details
+
+| Status code | Description | Response headers |
+|-------------|-------------|------------------|
+**200** | Gzip-compressed UTF-8 JSON file. After gunzip, the payload is a JSON array of Document objects (Document[]). Suggested filename is in Content-Disposition. |  * Content-Disposition - attachment; filename&#x3D;\&quot;{collection_name}-{timestamp}.json.gz\&quot; <br>  |
+**404** | Collection not found |  -  |
+**422** | Validation Error |  -  |
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
+
 # **fetch_documents**
 > DocumentFetchResponse fetch_documents(collection_name, document_fetch_request)
 
@@ -909,7 +983,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **get_document**
-> Document get_document(collection_name, document_id)
+> Document get_document(collection_name, document_id, with_vectors=with_vectors)
 
 Get Document
 
@@ -920,6 +994,7 @@ Retrieves a specific document by its ID from the specified collection.
 Args:
     collection_name: The name of the collection.
     document_id: The unique identifier of the document to retrieve.
+    with_vectors: When true, include stored vector values on the document.
 
 Returns:
     The retrieved `Document` object.
@@ -949,10 +1024,11 @@ async with amgix_client.ApiClient(configuration) as api_client:
     api_instance = amgix_client.AmgixApi(api_client)
     collection_name = 'collection_name_example' # str | Collection name (alphanumeric, underscores, hyphens only)
     document_id = 'document_id_example' # str | 
+    with_vectors = False # bool | When true, include stored vector values on the document. (optional) (default to False)
 
     try:
         # Get Document
-        api_response = await api_instance.get_document(collection_name, document_id)
+        api_response = await api_instance.get_document(collection_name, document_id, with_vectors=with_vectors)
         print("The response of AmgixApi->get_document:\n")
         pprint(api_response)
     except Exception as e:
@@ -968,6 +1044,7 @@ Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
  **collection_name** | **str**| Collection name (alphanumeric, underscores, hyphens only) | 
  **document_id** | **str**|  | 
+ **with_vectors** | **bool**| When true, include stored vector values on the document. | [optional] [default to False]
 
 ### Return type
 
@@ -1563,7 +1640,7 @@ No authorization required
 [[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints) [[Back to Model list]](../README.md#documentation-for-models) [[Back to README]](../README.md)
 
 # **search**
-> List[SearchResult] search(collection_name, search_query)
+> SearchResponse search(collection_name, search_query)
 
 Search
 
@@ -1576,7 +1653,7 @@ Args:
     query: The `SearchQuery` object containing the search text, filters, and other parameters.
 
 Returns:
-    A list of `SearchResult` objects, where each object represents a search result.
+    A `SearchResponse` with search hits and server-side query timing.
 
 ### Example
 
@@ -1584,7 +1661,7 @@ Returns:
 ```python
 import amgix_client
 from amgix_client.models.search_query import SearchQuery
-from amgix_client.models.search_result import SearchResult
+from amgix_client.models.search_response import SearchResponse
 from amgix_client.rest import ApiException
 from pprint import pprint
 
@@ -1623,7 +1700,7 @@ Name | Type | Description  | Notes
 
 ### Return type
 
-[**List[SearchResult]**](SearchResult.md)
+[**SearchResponse**](SearchResponse.md)
 
 ### Authorization
 
