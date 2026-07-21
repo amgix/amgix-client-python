@@ -42,6 +42,8 @@ Check if a collection exists. Always returns 200 with exists true or false.
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -55,6 +57,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -86,7 +103,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -127,6 +144,8 @@ Raises:
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -141,6 +160,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -174,7 +208,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -207,6 +241,8 @@ Returns:
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -220,6 +256,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -251,7 +302,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -285,6 +336,8 @@ Returns:
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -298,6 +351,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -329,7 +397,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -363,6 +431,8 @@ Returns:
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -376,6 +446,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -411,7 +496,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -445,6 +530,8 @@ Returns:
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -458,6 +545,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -493,7 +595,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -527,6 +629,8 @@ Returns:
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -540,6 +644,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -571,7 +690,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -598,6 +717,8 @@ Streams ``[{...},{...},...]`` without loading the full collection into memory.
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -610,6 +731,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -643,7 +779,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -684,6 +820,8 @@ Raises:
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -698,6 +836,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -731,7 +884,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -764,6 +917,8 @@ Returns:
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -777,6 +932,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -808,7 +978,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -841,6 +1011,8 @@ Returns:
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -854,6 +1026,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -885,7 +1072,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -922,6 +1109,8 @@ Raises:
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -935,6 +1124,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -966,7 +1170,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -1004,6 +1208,8 @@ Raises:
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -1017,6 +1223,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -1052,7 +1273,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -1090,6 +1311,8 @@ Raises:
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -1103,6 +1326,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -1136,7 +1374,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -1306,6 +1544,8 @@ Returns:
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -1318,6 +1558,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -1345,7 +1600,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -1369,6 +1624,8 @@ Return the current metrics state for all nodes over the given window (seconds).
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -1382,6 +1639,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -1415,7 +1687,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -1440,6 +1712,8 @@ Return catalog entries for all known metric keys, their units, and descriptions.
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -1453,6 +1727,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -1480,7 +1769,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -1504,6 +1793,8 @@ Expose current cluster metrics in Prometheus text exposition (60s rolling window
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -1516,6 +1807,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -1543,7 +1849,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -1573,6 +1879,8 @@ Args:
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -1586,6 +1894,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -1623,7 +1946,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -1657,6 +1980,8 @@ Returns:
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -1671,6 +1996,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -1704,7 +2044,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -1729,6 +2069,8 @@ Summarize deployment and infrastructure (no connection URLs).
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -1742,6 +2084,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -1769,7 +2126,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -1806,6 +2163,8 @@ Raises:
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -1820,6 +2179,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -1853,7 +2227,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -1893,6 +2267,8 @@ Raises:
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -1907,6 +2283,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -1940,7 +2331,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
@@ -1978,6 +2369,8 @@ Raises:
 
 ### Example
 
+* Api Key Authentication (ApiKeyHeader):
+* Bearer Authentication (BearerAuth):
 
 ```python
 import amgix_client
@@ -1992,6 +2385,21 @@ configuration = amgix_client.Configuration(
     host = "http://localhost:8234"
 )
 
+# The client must configure the authentication and authorization parameters
+# in accordance with the API server security policy.
+# Examples for each auth method are provided below, use the example that
+# satisfies your auth use case.
+
+# Configure API key authorization: ApiKeyHeader
+configuration.api_key['ApiKeyHeader'] = os.environ["API_KEY"]
+
+# Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
+# configuration.api_key_prefix['ApiKeyHeader'] = 'Bearer'
+
+# Configure Bearer authorization: BearerAuth
+configuration = amgix_client.Configuration(
+    access_token = os.environ["BEARER_TOKEN"]
+)
 
 # Enter a context with an instance of the API client
 async with amgix_client.ApiClient(configuration) as api_client:
@@ -2025,7 +2433,7 @@ Name | Type | Description  | Notes
 
 ### Authorization
 
-No authorization required
+[ApiKeyHeader](../README.md#ApiKeyHeader), [BearerAuth](../README.md#BearerAuth)
 
 ### HTTP request headers
 
