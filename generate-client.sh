@@ -71,6 +71,10 @@ echo "API ready"
 echo "Fetching OpenAPI spec ..."
 curl -fsS -o "$OPENAPI_31_TMP" http://localhost:8234/openapi.json
 
+DOCS_OPENAPI="${ROOT}/../amgix-docs/docs/assets/openapi.json"
+echo "Copying raw OpenAPI spec to ${DOCS_OPENAPI} ..."
+cp "$OPENAPI_31_TMP" "$DOCS_OPENAPI"
+
 echo "Downgrading spec (OpenAPI 3.1 → 3.0-compatible) ..."
 python3 "$ROOT/openapi-downgrade.py" "$OPENAPI_31_TMP" -o "$OPENAPI_30_LOCAL" -f json
 rm -f "$OPENAPI_31_TMP"
@@ -100,7 +104,12 @@ echo "PEP 440 version for packaging (setuptools): ${PEP440_PACKAGE_VERSION}"
 sed -i "s|^VERSION = \".*\"|VERSION = \"${PEP440_PACKAGE_VERSION}\"|" "$ROOT/src/setup.py"
 sed -i "s|^version = \".*\"|version = \"${PEP440_PACKAGE_VERSION}\"|" "$ROOT/src/pyproject.toml"
 
+DOCS_DEST="${ROOT}/../amgix-docs/docs/client-python"
+echo "Copying client docs to ${DOCS_DEST} ..."
+mkdir -p "$DOCS_DEST"
+rsync -a --delete "$ROOT/src/docs/" "$DOCS_DEST/"
+
 cleanup
 trap - EXIT
 
-echo "Done. Review changes under src/, and commit if correct."
+echo "Done. Review changes under src/ and amgix-docs/, and commit if correct."
