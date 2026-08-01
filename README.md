@@ -1,4 +1,4 @@
-Python Client for the Amalgam Index (Amgix) API
+Python Client for the Amgix (Amalgam Index) API
 
 ## Install
 
