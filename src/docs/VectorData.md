@@ -7,7 +7,7 @@ Vector data for a specific vector. Contains the precalculated vector values, whi
 Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **vector_name** | **str** | Name of the vector | 
-**var_field** | **str** | Field this vector is for (name, description, content) | 
+**var_field** | **str** | Field this vector is for (name, description, content, or template) | 
 **vector_type** | **str** | Type of vector (dense_model, sparse_model, full_text, trigrams, whitespace, wmtr, dense_custom, sparse_custom) | 
 **dense_vector** | **List[float]** | Dense vector values as a list of floats | [optional] 
 **sparse_indices** | **List[int]** | Sparse vector indices (token positions) | [optional] 

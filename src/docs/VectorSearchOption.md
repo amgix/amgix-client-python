@@ -8,7 +8,7 @@ Name | Type | Description | Notes
 ------------ | ------------- | ------------- | -------------
 **vector_name** | **str** | Name of the vector to search with | 
 **weight** | **float** | Weight to apply to this vector&#39;s search results | [optional] [default to 1.0]
-**var_field** | **str** | Field to search with this vector (name, description, content) | 
+**var_field** | **str** | Field to search with this vector (name, description, content). Optional for template-based vectors (ignored if present). | [optional] 
 **wmtr_trigram_weight** | **float** | WMTR trigram channel multiplier for this vector option (used when vector_name is a WMTR vector). | [optional] [default to 1.0]
 
 ## Example

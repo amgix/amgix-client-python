@@ -1914,8 +1914,8 @@ configuration = amgix_client.Configuration(
 async with amgix_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = amgix_client.AmgixApi(api_client)
-    since = '2013-10-20T19:20:30+01:00' # datetime | 
-    until = '2013-10-20T19:20:30+01:00' # datetime | 
+    since = '2013-10-20T19:20:30+01:00' # datetime | Inclusive start of the time range (ISO 8601)
+    until = '2013-10-20T19:20:30+01:00' # datetime | Exclusive end of the time range (ISO 8601)
     resolution = 60 # int | Bucket size in seconds - 60 for 1-minute, 300 for 5-minute. (optional) (default to 60)
     keys = ['keys_example'] # List[str] |  (optional)
 
@@ -1935,8 +1935,8 @@ async with amgix_client.ApiClient(configuration) as api_client:
 
 Name | Type | Description  | Notes
 ------------- | ------------- | ------------- | -------------
- **since** | **datetime**|  | 
- **until** | **datetime**|  | 
+ **since** | **datetime**| Inclusive start of the time range (ISO 8601) | 
+ **until** | **datetime**| Exclusive end of the time range (ISO 8601) | 
  **resolution** | **int**| Bucket size in seconds - 60 for 1-minute, 300 for 5-minute. | [optional] [default to 60]
  **keys** | [**List[str]**](str.md)|  | [optional] 
 
